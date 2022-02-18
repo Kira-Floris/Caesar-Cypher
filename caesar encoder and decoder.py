@@ -1,141 +1,88 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "id": "053d27de",
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "enter text to be encodedclemence\n",
-      "enter the key for encoding13\n",
-      "Encoded message: pyrzrapr\n",
-      "Decoded message: clemence\n"
-     ]
-    }
-   ],
-   "source": [
-    "import string\n",
-    "letterslower = list(string.ascii_lowercase)\n",
-    "lettersupper = list(string.ascii_uppercase)\n",
-    "punctuations = list(string.punctuation)\n",
-    "\n",
-    "# chooseindex function is meant to make letters from a-z to look\n",
-    "# circular so that after z comes a then so on\n",
-    "def chooseindex(n):\n",
-    "    if n>25:\n",
-    "        n = n-25-1\n",
-    "        return n\n",
-    "    elif n<0:\n",
-    "        n = 25+n+1\n",
-    "        return n\n",
-    "    return n\n",
-    "\n",
-    "# this is to encode a message\n",
-    "# does so by adding n being the key to the index of a letter in the normal \n",
-    "# alphabet and then find that index in letters\n",
-    "def caesarencode(text, n):\n",
-    "    \n",
-    "    # check ifthe key is between 0 and 26\n",
-    "    if (n > 26) or (n < 0):\n",
-    "        return \"N must be shorter than 26 or greater or equal to 0\"\n",
-    "    text = list(text) # text is changed into a list for easy\n",
-    "    for t in range(len(text)):\n",
-    "        \n",
-    "        #check if lower, check in lowercase values, else in uppercase\n",
-    "        if text[t].islower():\n",
-    "            letters = letterslower\n",
-    "        elif text[t].isupper():\n",
-    "            letters = lettersupper\n",
-    "            \n",
-    "        # if punctuation skip else choose letter at index + n\n",
-    "        # if index is out of range circulate using chooseindex function\n",
-    "        if not text[t] in punctuations and text[t] != ' ':\n",
-    "            text[t] = letters[chooseindex(letters.index(text[t])+n)]\n",
-    "    \n",
-    "    # reassemble the text\n",
-    "    temp = \"\"\n",
-    "    for t in text:\n",
-    "        temp+=t\n",
-    "    return temp\n",
-    "\n",
-    "\n",
-    "# this is to decode a message\n",
-    "# first create an alphabet list from n to 26 and append the letters before n\n",
-    "# on the back of the list\n",
-    "# then by adding the n on the index of each letters and replacing by the value \n",
-    "# in the above list decodes the message\n",
-    "def caesardecode(text, n):\n",
-    "    \n",
-    "    # checks if the key is between 0 and 25\n",
-    "    if (n > 26) or (n < 0):\n",
-    "        return \"N must be shorter than 26 or greater or equal to 0\"\n",
-    "    text = list(text) # make the text into list for easy\n",
-    "    newletters = []\n",
-    "    for t in range(len(text)):\n",
-    "        \n",
-    "        # choose lowercase letters for lower otherwise uppercase letters list\n",
-    "        if text[t].islower():\n",
-    "            letters = letterslower\n",
-    "        elif text[t].isupper():\n",
-    "            letters = lettersupper\n",
-    "            \n",
-    "        # make the list from n to 26 then attach letters before n on the back\n",
-    "        # of the list\n",
-    "        newletters = letters[n:]\n",
-    "        newletters.extend(letters[:n])\n",
-    "        \n",
-    "        # skip if punctuation\n",
-    "        # if letter replace by letter at index + n in newletters\n",
-    "        # if out of range circulate using chooseindex\n",
-    "        if not text[t] in punctuations and text[t] != ' ':\n",
-    "            text[t] = newletters[chooseindex(newletters.index(text[t])-n)]\n",
-    "    \n",
-    "    # reassemble the text\n",
-    "    temp = \"\"\n",
-    "    for t in text:\n",
-    "        temp += t\n",
-    "    return temp\n",
-    "    \n",
-    "test = input(\"enter text to be encoded\")\n",
-    "key = int(input(\"enter the key for encoding\"))\n",
-    "encoded_message = caesarencode(test, key)\n",
-    "\n",
-    "print(\"Encoded message:\", encoded_message)\n",
-    "print(\"Decoded message:\",caesardecode(encoded_message, key))"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "60b9ff70",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3 (ipykernel)",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.9.7"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+import string
+letterslower = list(string.ascii_lowercase)
+lettersupper = list(string.ascii_uppercase)
+punctuations = list(string.punctuation)
+
+# chooseindex function is meant to make letters from a-z to look
+# circular so that after z comes a then so on
+def chooseindex(n):
+    if n>25:
+        n = n-25-1
+        return n
+    elif n<0:
+        n = 25+n+1
+        return n
+    return n
+
+# this is to encode a message
+# does so by adding n being the key to the index of a letter in the normal 
+# alphabet and then find that index in letters
+def caesarencode(text, n):
+    
+    # check ifthe key is between 0 and 26
+    if (n > 26) or (n < 0):
+        return "N must be shorter than 26 or greater or equal to 0"
+    text = list(text) # text is changed into a list for easy
+    for t in range(len(text)):
+        
+        #check if lower, check in lowercase values, else in uppercase
+        if text[t].islower():
+            letters = letterslower
+        elif text[t].isupper():
+            letters = lettersupper
+            
+        # if punctuation skip else choose letter at index + n
+        # if index is out of range circulate using chooseindex function
+        if not text[t] in punctuations and text[t] != ' ':
+            text[t] = letters[chooseindex(letters.index(text[t])+n)]
+    
+    # reassemble the text
+    temp = ""
+    for t in text:
+        temp+=t
+    return temp
+
+
+# this is to decode a message
+# first create an alphabet list from n to 26 and append the letters before n
+# on the back of the list
+# then by adding the n on the index of each letters and replacing by the value 
+# in the above list decodes the message
+def caesardecode(text, n):
+    
+    # checks if the key is between 0 and 25
+    if (n > 26) or (n < 0):
+        return "N must be shorter than 26 or greater or equal to 0"
+    text = list(text) # make the text into list for easy
+    newletters = []
+    for t in range(len(text)):
+        
+        # choose lowercase letters for lower otherwise uppercase letters list
+        if text[t].islower():
+            letters = letterslower
+        elif text[t].isupper():
+            letters = lettersupper
+            
+        # make the list from n to 26 then attach letters before n on the back
+        # of the list
+        newletters = letters[n:]
+        newletters.extend(letters[:n])
+        
+        # skip if punctuation
+        # if letter replace by letter at index + n in newletters
+        # if out of range circulate using chooseindex
+        if not text[t] in punctuations and text[t] != ' ':
+            text[t] = newletters[chooseindex(newletters.index(text[t])-n)]
+    
+    # reassemble the text
+    temp = ""
+    for t in text:
+        temp += t
+    return temp
+    
+test = input("enter text to be encoded")
+key = int(input("enter the key for encoding"))
+encoded_message = caesarencode(test, key)
+
+print("Encoded message:", encoded_message)
+print("Decoded message:",caesardecode(encoded_message, key))
